@@ -1,0 +1,231 @@
+import sys
+
+static_estimate_positions_count = 0
+
+def generate_w1_moves(w1, w2, b1, b2):
+    if (w1 == 9): #w1 is outside the board, nothing to return
+        return None
+    elif (w1 == 8): #w1 is on the last spot, winning move
+        return (9, w2, b1, b2)
+    elif (w1 + 1 != b1 and w1 + 1 != b2 and w1 + 1 != w2): #checking if the box next to w1 is occupied
+        return (w1 + 1, w2, b1, b2)
+    elif ((w1 + 2 != b1 and w1 + 2 != b2 and w1 + 2 != w2) or w1 + 2 == 9): #checking if two spots next to w1 is occupied
+        new_w1 = w1 + 2
+        if(w1 + 1 == b1): # if w1 jumps over b1
+            if(w1 != 8 and w2 != 8 and b2 != 8): #if last square is open
+                b1 = 8
+            elif(w1 != 7 and w2 != 7 and b2 != 7):
+                b1 = 7
+            elif(w1 != 6 and w2 != 6 and b2 != 6):
+                b1 = 6
+            elif(w1 != 5 and w2 != 5 and b2 != 5):
+                b1 = 5
+        elif(w1 + 1 == b2):
+            if(w1 != 8 and w2 != 8 and b1 != 8): #if last square is open
+                b2 = 8
+            elif(w1 != 7 and w2 != 7 and b1 != 7):
+                b2 = 7
+            elif(w1 != 6 and w2 != 6 and b1 != 6):
+                b2 = 6
+            elif(w1 != 5 and w2 != 5 and b1 != 5):
+                b2 = 5
+        return (new_w1, w2, b1, b2)
+    elif((w1 + 3 != b1 and w1 + 3 != b2 and w1 + 3 != w2) or (w1 + 3 ==9)):
+        return (w1 + 3, w2, b1, b2)
+    elif((w1 + 4 != b1 and w1 + 4 != b2 and w1 + 4 != w2) or (w1 + 4 ==9)):
+        return (w1 + 4, w2, b1, b2)
+    elif((w1 + 5 != b1 and w1 + 5 != b2 and w1 + 5 != w2) or (w1 + 5 ==9)):
+        return (w1 + 5, w2, b1, b2)
+
+
+def generate_w2_moves(w1, w2, b1, b2):
+    if (w2 == 9): #w2 is outside the board, nothing to return
+        return None
+    elif (w2 == 8): #w1 is on the last spot, winning move
+        return (w1, 9, b1, b2)
+    elif (w2 + 1 != b1 and w2 + 1 != b2 and w2 + 1 != w1): #checking if the box next to w1 is occupied
+        return (w1, w2 + 1, b1, b2)
+    elif ((w2 + 2 != b1 and w2 + 2 != b2 and w2 + 2 != w1) or w2 + 2 == 9): #checking if two spots next to w1 is occupied
+        new_w2 = w2 + 2
+        if(w2 + 1 == b1): # if w1 jumps over b1
+            if(w1 != 8 and w2 != 8 and b2 != 8): #if last square is open
+                b1 = 8
+            elif(w1 != 7 and w2 != 7 and b2 != 7):
+                b1 = 7
+            elif(w1 != 6 and w2 != 6 and b2 != 6):
+                b1 = 6
+            elif(w1 != 5 and w2 != 5 and b2 != 5):
+                b1 = 5
+        elif(w2 + 1 == b2):
+            if(w1 != 8 and w2 != 8 and b1 != 8): #if last square is open
+                b2 = 8
+            elif(w1 != 7 and w2 != 7 and b1 != 7):
+                b2 = 7
+            elif(w1 != 6 and w2 != 6 and b1 != 6):
+                b2 = 6
+            elif(w1 != 5 and w2 != 5 and b1 != 5):
+                b2 = 5
+        return (w1, new_w2, b1, b2)
+    elif((w2 + 3 != b1 and w2 + 3 != b2 and w2 + 3 != w1) or (w2 + 3 ==9)):
+        return (w1, w2 + 3, b1, b2)
+    elif((w2 + 4 != b1 and w2 + 4 != b2 and w2 + 4 != w1) or (w2 + 4 ==9)):
+        return (w1, w2 + 4, b1, b2)
+    elif((w2 + 5 != b1 and w2 + 5 != b2 and w2 + 5 != w1) or (w2 + 5 ==9)):
+        return (w1, w2 + 5, b1, b2)
+    
+def is_winning_position(position):
+    w1, w2, b1, b2 = position
+    if((w1 == 9 and w2 == 9) or (b1 == 0 and b2 == 0)):
+        return True
+    else:
+        return False
+    
+def generate_white_moves(initial_position): #combines w1 and w2 move generation
+    w1, w2, b1, b2 = initial_position
+    moves =[] #stores all possible moves by white
+
+    w1_moves = generate_w1_moves(w1, w2, b1, b2)
+    if w1_moves:
+        moves.append(w1_moves)
+
+    w2_moves = generate_w2_moves(w1, w2, b1, b2)
+    if w2_moves:
+        moves.append(w2_moves)
+    return moves
+
+def generate_b1_moves(w1, w2, b1, b2): #generates legal moves for b1
+    if b1 == 0: #winning condition for black pieces
+        return None
+    elif b1 == 1:
+        return (w1, w2, 0, b2)
+    elif(b1 - 1 != w1 and b1 - 1 != w2 and b1 - 1 != b2):
+        return (w1, w2, b1 - 1, b2)
+    elif (b1 - 2!= w1 and b1 - 2 != w2 and b1 - 2 != b2):
+        new_b1 = b1 - 2
+        if (b1 - 1 == w1):
+            if(b1 != 1 and b2 != 1 and w2 != 1):
+                w1 = 1
+            elif (b1 != 2 and b2 != 2 and w2 != 2):
+                w1 = 2
+            elif (b1 != 3 and b2 != 3 and w2 != 3):
+                w1 = 3
+            elif (b1 != 4 and b2 != 4 and w2 != 4):
+                w1 = 4
+        elif (b1 - 1 == w2):
+            if(b1 != 1 and b2 != 1 and w1 != 1):
+                w2 = 1
+            elif (b1 != 2 and b2 != 2 and w1 != 2):
+                w2 = 2
+            elif (b1 != 3 and b2 != 3 and w1 != 3):
+                w2 = 3
+            elif (b1 != 4 and b2 != 4 and w1 != 4):
+                w2 = 4
+        return (w1, w2, new_b1, b2)
+    elif ((b1 - 3 != w1 and b1 - 3 != w2 and b1 - 3 != b2) or (b1 - 3 == 0)):
+        return (w1, w2, b1 - 3, b2)
+    elif ((b1 - 4 != w1 and b1 - 4 != w2 and b1 - 4 != b2) or (b1 - 4 == 0)):
+        return (w1, w2, b1 - 4, b2)
+    elif ((b1 - 5 != w1 and b1 - 5 != w2 and b1 - 5 != b2) or (b1 - 5 == 0)):
+        return (w1, w2, b1 - 5, b2)
+
+def generate_b2_moves(w1, w2, b1, b2): #generates legal moves for b2
+    if b2 == 0:
+        return None
+    elif b2 == 1:
+        return (w1, w2, b1, 0)
+    elif(b2 - 1 != w1 and b2 - 1 != w2 and b2 - 1 != b1):
+        return (w1, w2, b1, b2 - 1)
+    elif (b2 - 2!= w1 and b2 - 2 != w2 and b2 - 2 != b1):
+        new_b2 = b2 - 2
+        if (b2 - 1 == w1):
+            if(b1 != 1 and b2 != 1 and w2 != 1):
+                w1 = 1
+            elif (b1 != 2 and b2 != 2 and w2 != 2):
+                w1 = 2
+            elif (b1 != 3 and b2 != 3 and w2 != 3):
+                w1 = 3
+            elif (b1 != 4 and b2 != 4 and w2 != 4):
+                w1 = 4
+        elif (b2 - 1 == w2):
+            if(b1 != 1 and b2 != 1 and w1 != 1):
+                w2 = 1
+            elif (b1 != 2 and b2 != 2 and w1 != 2):
+                w2 = 2
+            elif (b1 != 3 and b2 != 3 and w1 != 3):
+                w2 = 3
+            elif (b1 != 4 and b2 != 4 and w1 != 4):
+                w2 = 4
+        return (w1, w2, b1, new_b2)
+    elif ((b2 - 3 != w1 and b2 - 3 != w2 and b2 - 3 != b1) or (b2 - 3 == 0)):
+        return (w1, w2, b1, b2 - 3)
+    elif ((b2 - 4 != w1 and b2 - 4 != w2 and b2 - 4 != b1) or (b2 - 4 == 0)):
+        return (w1, w2, b1, b2 - 2)
+    elif ((b2 - 5 != w1 and b2 - 5 != w2 and b2 - 5 != b2) or (b2 - 5 == 0)):
+        return (w1, w2, b1, b2 - 5)
+
+def generate_black_moves(initial_position): #combines b1 and b2 move generation
+    w1, w2, b1, b2 = initial_position
+    moves =[] #stores all possible moves by black
+
+    b1_moves = generate_b1_moves(w1, w2, b1, b2)
+    if b1_moves:
+        moves.append(b1_moves)
+
+    b2_moves = generate_b2_moves(w1, w2, b1, b2)
+    if b2_moves:
+        moves.append(b2_moves)
+    
+    return moves
+
+def static_estimate(position): #static estimate calculator
+    global static_estimate_positions_count
+    static_estimate_positions_count += 1 #counting number of positions evaluated
+    w1, w2, b1, b2 = position
+    if(w1 == 9 and w2 == 9):
+        return 100
+    elif(b1 == 0 and b2 == 0):
+        return -100
+    else:
+        return (w1 + w2 + b1 + b2 - 18) #heuristic provided by prof
+    
+def minimax(position, depth, white_flag):
+    if ((is_winning_position(position) == True) or depth == 0): #base case --> end state or reached root
+        return (position, static_estimate(position))
+    elif white_flag == True:
+        max_value = float('-inf')
+        best_move = None
+        for child in generate_white_moves(position):
+            _, value = minimax(child, depth - 1, False)
+            if value > max_value:
+                max_value = value
+                best_move = child
+        return (best_move, max_value)
+    else:
+        min_value = float('inf')
+        best_move = None
+        for child in generate_black_moves(position):
+            _, value = minimax(child, depth - 1, True)
+            if value < min_value:
+                min_value = value
+                best_move = child
+        return (best_move, min_value)
+    
+def main():
+    input_file = sys.argv[1] #name of input file from command line
+    output_file = sys.argv[2] #name of output file
+    depth = int(sys.argv[3]) #depth of tree to be searched
+
+    with open(input_file, 'r') as f:
+        game_state = tuple(int(x) for x in f.readline().strip()) #current position is stored in game state
+    
+    board_position_after_b, minimax_estimate = minimax(game_state, depth, white_flag=False)
+
+    print(f"Board position (After Black played): {board_position_after_b}") #board position after white has played
+    print(f"Positions evaluated by static estimate: {static_estimate_positions_count}")
+    print(f"MINIMAX estimate: {minimax_estimate}")
+
+    with open(output_file, 'w') as f:
+        f.write((str)(board_position_after_b) + '\n')
+
+if __name__ == "__main__":
+    main()
