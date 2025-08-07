@@ -7,7 +7,7 @@ The game starts out with a board like this:
 
 <img width="548" height="94" alt="image" src="https://github.com/user-attachments/assets/50335147-4dd6-4d00-ba7c-0cb8d0c58df6" />
 
-where White has two pieces on the leftmost boxes numbered 1 and 2, and Black has two pieces on the rightmost boxes numbered 7 and 8.
+White has two pieces on the leftmost boxes numbered 1 and 2, and Black has two pieces on the rightmost boxes numbered 7 and 8.
 The initial game state is denoted by 1278, where the two left numbers indicate where the White pieces are on the board and the right numbers indicate where the Black pieces are on the board.
 
 The objective of both the players is to get both their respective pieces out of the opposite side of the board. Meaning, White needs to move the pieces beyond box 8 by moving to the right. Outside the box for white is denoted by "9".
