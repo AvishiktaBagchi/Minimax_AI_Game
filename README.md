@@ -4,6 +4,7 @@ The concept behind Minimax is to increase (or maximize) the rewards for the mach
 In this program, written for Dr. Haim Schweitzer's AI class at UT Dallas, the Minimax algorithm is used to play a game called Jumpy.
 
 The game starts out with a board like this:
+
 <img width="548" height="94" alt="image" src="https://github.com/user-attachments/assets/50335147-4dd6-4d00-ba7c-0cb8d0c58df6" />
 
 where White has two pieces on the leftmost boxes numbered 1 and 2, and Black has two pieces on the rightmost boxes numbered 7 and 8.
